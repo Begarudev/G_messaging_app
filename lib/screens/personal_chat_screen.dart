@@ -146,22 +146,6 @@ class _PersonalChatScreenState extends ConsumerState<PersonalChatScreen> {
                             ),
                           ),
                         ),
-                      if (ref.watch(imageUploadStateProvider))
-                        Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: mq.width * 0.3),
-                            alignment: Alignment.centerRight,
-                            child: const Icon(
-                              color: Colors.tealAccent,
-                              Icons.cloud_upload,
-                              size: 50,
-                            )
-                                .animate(
-                                    onPlay: (controller) => controller.repeat())
-                                .shimmer(
-                                    color: Colors.white,
-                                    angle: 180,
-                                    duration: const Duration(seconds: 1))),
                       ChatInput(
                         textController: _textController,
                         list: _list,
@@ -196,11 +180,25 @@ class ChatInput extends ConsumerStatefulWidget {
 }
 
 class _ChatInputState extends ConsumerState<ChatInput> {
+  bool _isUploading = false;
+
   @override
   Widget build(BuildContext context) {
     bool showEmoji = ref.watch(emojiSelectorStateProvider);
     return Column(
       children: [
+        if (_isUploading)
+          Container(
+              padding: EdgeInsets.symmetric(horizontal: mq.width * 0.3),
+              alignment: Alignment.centerRight,
+              child: const Icon(
+                color: Colors.tealAccent,
+                Icons.cloud_upload,
+                size: 50,
+              ).animate(onPlay: (controller) => controller.repeat()).shimmer(
+                  color: Colors.white,
+                  angle: 180,
+                  duration: const Duration(seconds: 1))),
         Padding(
           padding: EdgeInsets.symmetric(
               vertical: mq.height * .01, horizontal: mq.width * .025),
@@ -258,17 +256,18 @@ class _ChatInputState extends ConsumerState<ChatInput> {
                             // uploading & sending image one by one
                             for (var i in images) {
                               log('Image Path: ${i.path}');
-                              ref
-                                  .watch(imageUploadStateProvider.notifier)
-                                  .update((state) => true);
-                              // setState(() => _isUploading = true);
+                              // ref
+                              //     .watch(imageUploadStateProvider.notifier)
+                              //     .update((state) => true);
+                              setState(() => _isUploading = true);
                               await APIs.sendChatImage(
                                   widget.user, File(i.path));
-                              // setState(() => _isUploading = false);
                             }
-                            ref
-                                .watch(imageUploadStateProvider.notifier)
-                                .update((state) => false);
+                            setState(() => _isUploading = false);
+
+                            // (value) => ref
+                            //     .watch(imageUploadStateProvider.notifier)
+                            //     .update((state) => false);
                           },
                           icon: const Icon(Icons.image,
                               /*color: Colors.blueAccent,*/ size: 26)),
@@ -283,12 +282,12 @@ class _ChatInputState extends ConsumerState<ChatInput> {
                                 source: ImageSource.camera, imageQuality: 70);
                             if (image != null) {
                               log('Image Path: ${image.path}');
-                              // setState(() => _isUploading = true);
+                              setState(() => _isUploading = true);
 
                               await APIs.sendChatImage(
                                   widget.user, File(image.path));
-                              // setState(() => _isUploading = false);
                             }
+                            setState(() => _isUploading = false);
                           },
                           icon: const Icon(Icons.camera_alt_rounded,
                               /*color: Colors.blueAccent,*/ size: 26)),

@@ -197,7 +197,6 @@ class _MessageCardState extends State<MessageCard> {
                                     .shimmer(
                                         duration: const Duration(seconds: 2)),
                                 alignment: Alignment.topLeft,
-                                useOldImageOnUrlChange: true,
                                 width: mq.width * 0.6,
                                 imageUrl: widget.message.msg,
                                 errorWidget: (context, url, error) =>
