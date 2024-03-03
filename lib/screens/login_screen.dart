@@ -4,36 +4,49 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:twitter_messaging_app/constants/assets.dart';
+import 'package:twitter_messaging_app/services/riverpod.dart';
 
 import '../helper/dialogs.dart';
 import '../services/apis.dart';
+import 'home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    handleUserBtnClick(context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final doesUserExist = ref.watch(userExistProvider).when(
+          data: (data) => data,
+          error: (error, stackTrace) => false,
+          loading: () => false,
+        );
+
+    handleUserBtnClick(BuildContext context) {
+      //for showing progress bar
       Dialogs.showProgressBar(context);
+
       _signInWithGoogle(context).then((user) async {
+        //for hiding progress bar
         Navigator.pop(context);
+
         if (user != null) {
           log('\nUser: ${user.user}');
-          log('\nUser Additional Info: ${user.additionalUserInfo}');
-          if ((await APIs.userExists())) {
-            context.go('/');
+          log('\nUserAdditionalInfo: ${user.additionalUserInfo}');
+
+          if (doesUserExist != null) {
+            // context.go('/');
           } else {
-            await APIs.createUser().then(
-              (value) => context.go('/'),
-            );
+            await APIs.createUser().then((value) {
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (_) => HomeScreen()));
+            });
           }
         }
-
-        return;
       });
     }
 
@@ -51,7 +64,7 @@ class LoginScreen extends StatelessWidget {
         ElevatedButton(
             style:
                 ElevatedButton.styleFrom(backgroundColor: Colors.transparent),
-            onPressed: () async {
+            onPressed: () {
               handleUserBtnClick(context);
             },
             child: Padding(
@@ -130,9 +143,9 @@ Future<UserCredential?> _signInWithGoogle(BuildContext context) async {
   }
 }
 
-final GoogleSignIn _googleSignIn = GoogleSignIn();
-
-void signOut() async {
-  await APIs.auth.signOut();
-  await _googleSignIn.signOut();
-}
+// final GoogleSignIn _googleSignIn = GoogleSignIn();
+//
+// void signOut() async {
+//   await APIs.auth.signOut();
+//   await _googleSignIn.signOut();
+// }

@@ -8,4 +8,9 @@ final selectedIndexProvider = StateProvider((ref) => 4);
 
 // final listOfUsersProvider = StateProvider<List<ChatUser>>((ref) => []);
 
-final currentUserProvider = Provider<ChatUser>((ref) => APIs.me);
+final currentUserProvider = StateProvider<ChatUser>((ref) => APIs.me);
+
+final emojiSelectorStateProvider = StateProvider((ref) => false);
+final imageUploadStateProvider = StateProvider((ref) => false);
+
+final userExistProvider = StreamProvider((ref) => APIs.auth.authStateChanges());

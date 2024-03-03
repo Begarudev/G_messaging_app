@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:twitter_messaging_app/constants/assets.dart';
 
 import '../main.dart';
 
 //splash screen
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashScreenNewUser extends StatefulWidget {
+  const SplashScreenNewUser({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreenNewUser> createState() => _SplashScreenNewUserState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenNewUserState extends State<SplashScreenNewUser> {
   @override
   void initState() {
     super.initState();
-    // Future.delayed(
-    //   const Duration(seconds: 0),
-    //   () {
-    //     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    //     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //         systemNavigationBarColor: Colors.transparent,
-    //         statusBarColor: Colors.transparent));
-    //
-    //     // if (APIs.auth.currentUser != null) {
-    //     //   log('\nUser: ${APIs.auth.currentUser}');
-    //     //   context.pushReplacement('/');
-    //     // } else {
-    //     //   context.pushReplacement('/loginScreen');
-    //     // }
-    //   },
-    // );
+    Future.delayed(
+      const Duration(seconds: 0),
+      () {
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+        SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.transparent,
+            statusBarColor: Colors.transparent));
+
+        // if (APIs.auth.currentUser != null) {
+        //   log('\nUser: ${APIs.auth.currentUser}');
+        //   // context.pushReplacement('/');
+        // } else {
+        //   // context.pushReplacement('/loginScreen');
+        // }
+      },
+    );
   }
 
   // @override
