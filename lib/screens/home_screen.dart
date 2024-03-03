@@ -8,7 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:twitter_messaging_app/constants/assets.dart';
-import 'package:twitter_messaging_app/models/chat_user.dart';
 import 'package:twitter_messaging_app/screens/chat_screen.dart';
 import 'package:twitter_messaging_app/screens/profile_screen.dart';
 import 'package:twitter_messaging_app/screens/splash_screen.dart';
@@ -19,9 +18,7 @@ import '../services/apis.dart';
 import '../services/riverpod.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  HomeScreen({super.key});
-
-  List<ChatUser> list = [];
+  const HomeScreen({super.key});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
@@ -35,6 +32,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     APIs.updateActiveStatus(true);
 
     SystemChannels.lifecycle.setMessageHandler((message) {
+      log("status: $message");
       if (APIs.auth.currentUser != null) {
         if (message.toString().contains('pause')) {
           APIs.updateActiveStatus(false);
@@ -60,21 +58,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfileScreen(
-                              user: ref.watch(currentUserProvider)),
-                        ));
-                    // context.push('/profileScreen');
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProfileScreen(user: ref.watch(currentUserProvider)),
+                      ),
+                    );
                   },
-                  icon: /*ClipOval(
-                  child: Image.network(
-                    GoogleSignInService().user!.photoURL!,
-                    fit: BoxFit.fill,
-                    errorBuilder: (context, error, stackTrace) =>*/
-                      const Icon(CupertinoIcons.person),
-                  //   ),
-                  // ),
+                  icon: const Icon(CupertinoIcons.person),
                 ),
                 toolbarHeight: 90,
                 actions: [

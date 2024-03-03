@@ -67,11 +67,51 @@ class _MessageCardState extends State<MessageCard> {
                           style: const TextStyle(
                               fontSize: 15, color: Colors.white70),
                         )
-                      : CachedNetworkImage(
-                          imageUrl: widget.message.msg,
-                          errorWidget: (context, url, error) => const Icon(
-                            Icons.image,
-                            size: 70,
+                      : GestureDetector(
+                          onTap: () => showDialog(
+                              useSafeArea: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      alignment: Alignment.topLeft,
+                                      width: mq.width * 0.6,
+                                      imageUrl: widget.message.msg,
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(
+                                        Icons.image,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                placeholder: (context, url) => const Icon(
+                                  Icons.image,
+                                  size: 70,
+                                )
+                                    .animate(
+                                      onPlay: (controller) =>
+                                          controller.repeat(),
+                                    )
+                                    .shimmer(
+                                        duration: const Duration(seconds: 2)),
+                                alignment: Alignment.topLeft,
+                                width: mq.width * 0.6,
+                                imageUrl: widget.message.msg,
+                                errorWidget: (context, url, error) =>
+                                    const Icon(
+                                  Icons.image,
+                                  size: 70,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                   Text(

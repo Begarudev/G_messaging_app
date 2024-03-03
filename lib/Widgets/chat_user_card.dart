@@ -67,22 +67,28 @@ class _ChatUserCardState extends State<ChatUserCard> {
               ),
               title: Text(widget.user.name),
               subtitle: Text(
-                (_message != null) ? _message!.msg : widget.user.about,
-                maxLines: 1,
-                style: const TextStyle(color: Colors.white54),
-              ),
-              trailing: (_message == null)
+                  _message != null
+                      ? _message!.type == Type.image
+                          ? 'image'
+                          : _message!.msg
+                      : "𝒾 : ${widget.user.about}",
+                  maxLines: 1),
+              trailing: _message == null
                   ? null
                   : _message!.read.isEmpty &&
                           _message!.fromId != APIs.currentUser.uid
-                      ? const CircleAvatar(
-                          radius: 5,
-                          backgroundColor: Colors.greenAccent,
+                      ? Container(
+                          width: 15,
+                          height: 15,
+                          decoration: BoxDecoration(
+                              color: Colors.tealAccent,
+                              borderRadius: BorderRadius.circular(10)),
                         )
                       : Text(
                           DateUtil.getLastMessageTime(
                               context: context, time: _message!.sent),
-                          style: const TextStyle(color: Colors.white54)),
+                          style: const TextStyle(color: Colors.white54),
+                        ),
             );
           },
         ),
