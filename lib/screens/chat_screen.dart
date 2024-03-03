@@ -24,9 +24,9 @@ class ChatScreen extends StatelessWidget {
           case ConnectionState.done:
             final data = snapshot.data?.docs;
             list = data?.map((e) => ChatUser.fromJson(e.data())).toList() ?? [];
-            list.sort(
-              (a, b) => b.lastActive.compareTo(a.lastActive),
-            );
+            // list.sort(
+            //   (a, b) => b.lastActive.compareTo(a.lastActive),
+            // );
             if (list.isNotEmpty) {
               return ListView.builder(
                 padding: EdgeInsets.only(top: mq.height * .01),
