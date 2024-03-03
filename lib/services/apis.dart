@@ -26,7 +26,6 @@ class APIs {
 
   static Future<void> getFirebaseMessagingToken() async {
     await fMessaging.requestPermission();
-
     fMessaging.getToken().then((t) {
       if (t != null) {
         me.pushToken = t;
@@ -45,9 +44,9 @@ class APIs {
           "body": msg,
           "android_channel_id": "chats"
         },
-        // "data": {
-        //   "some_data": "User ID: ${me.id}",
-        // },
+        "data": {
+          "data": me.id,
+        },
       };
 
       var res = await post(Uri.parse('https://fcm.googleapis.com/fcm/send'),

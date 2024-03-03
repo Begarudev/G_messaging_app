@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twitter_messaging_app/models/chat_user.dart';
+import 'package:twitter_messaging_app/screens/splash_screen.dart';
 
 import '../Widgets/chat_user_card.dart';
 import '../main.dart';
@@ -18,7 +19,7 @@ class ChatScreen extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
           case ConnectionState.none:
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: SplashScreen());
           case ConnectionState.active:
           case ConnectionState.done:
             final data = snapshot.data?.docs;

@@ -29,7 +29,6 @@ class _ChatUserCardState extends State<ChatUserCard> {
       child: InkWell(
         borderRadius: BorderRadius.circular(13),
         onTap: () {
-          // context.push('/personalChatScreen');
           Navigator.push(
               context,
               MaterialPageRoute(
